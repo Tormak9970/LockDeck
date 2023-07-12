@@ -1,0 +1,10 @@
+{
+  "name": "Lock Deck",
+  "author": "Travis Lane (Tormak)",
+  "flags": ["debug"],
+  "publish": {
+    "tags": ["Customization", "Lockscreen"],
+    "description": "Lock Deck gives you control over the layout, transitions and general styling of your Steam Deck's lockscreen.",
+    "image": "https://raw.githubusercontent.com/Tormak9970/LockDeck/main/assets/thumbnail.png"
+  }
+}
