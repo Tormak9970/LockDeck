@@ -10,6 +10,7 @@ export type Preset = {
   title: string,
   position: number,
 
+  backgroundColor: string | null,
   images: string[],
   transitionType: TransitionType,
 
