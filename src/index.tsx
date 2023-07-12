@@ -13,7 +13,6 @@ import {
 } from "decky-frontend-lib";
 import { VFC, Fragment, useState, useEffect } from "react";
 
-import { TbLayoutNavbarExpand } from "react-icons/tb";
 import { FaCircleCheck } from "react-icons/fa6";
 
 import { PluginController } from "./lib/controllers/PluginController";
@@ -24,6 +23,7 @@ import { LockDeckManager } from "./state/LockDeckManager";
 import { QamStyles } from "./components/styles/QamStyles";
 import { LockDeckContextProvider, useLockDeckContext } from "./state/LockDeckContext";
 import { EditablePreset, Preset } from "./components/presets/Presets";
+import { PluginIcon } from "./components/PluginIcon";
 
 declare global {
   var SteamClient: SteamClient;
@@ -56,8 +56,8 @@ const Content: VFC<{}> = ({ }) => {
   }, [presetsMap]);
 
   function PresetEntryInteractables({ entry }: PresetEntryInteractablesProps) {
-    const tabContainer = presetsMap.get(entry.data!.id)!;
-    return (<TabActionsButton {...{ tabContainer, lockDeckManager }} />);
+    const preset = presetsMap.get(entry.data!.id)!;
+    return (<TabActionsButton {...{ preset, lockDeckManager }} />);
   }
 
   function onAddClicked() {
@@ -140,7 +140,7 @@ export default definePlugin((serverAPI: ServerAPI) => {
       <LockDeckContextProvider lockDeckManager={lockDeckManager}>
         <Content />
       </LockDeckContextProvider>,
-    icon: <TbLayoutNavbarExpand />,
+    icon: <PluginIcon />,
     onDismount: () => {
       // TODO: remove lockscreen patch
       // serverAPI.routerHook.removePatch("/library", libraryPatch);
