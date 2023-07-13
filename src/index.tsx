@@ -22,7 +22,7 @@ import { LockDeckManager } from "./state/LockDeckManager";
 
 import { QamStyles } from "./components/styles/QamStyles";
 import { LockDeckContextProvider, useLockDeckContext } from "./state/LockDeckContext";
-import { EditablePreset, Preset } from "./components/presets/Presets";
+import { EditablePreset, Preset, presetDefaults } from "./components/presets/Presets";
 import { PluginIcon } from "./components/PluginIcon";
 import { PresetActionsButton } from "./components/PresetActionsButton";
 import { EditPresetModal } from "./components/modals/EditPresetModal";
@@ -68,31 +68,7 @@ const Content: VFC<{}> = ({ }) => {
         onConfirm={(_: any, newPreset: EditablePreset) => {
           lockDeckManager.createPreset(newPreset);
         }}
-        presetOptions={{
-          title: "",
-
-          backgroundColor: null,
-          images: [],
-          transitionType: "fade",
-
-          showProfileIcon: true,
-          profileRadius: "0px",
-          profileSize: "184px",
-          profilePosition: "default",
-          
-          showButtons: true,
-          buttonsSize: "32px",
-
-          showNumbers: true,
-          numbersColor: "#ffffff",
-          numbersSize: "48px",
-          numbersPosition: "default",
-
-          showDots: true,
-          dotsColor: "#ffffff",
-          dotsSize: "12px",
-          dotsPosition: "default",
-        }}
+        presetOptions={JSON.parse(JSON.stringify(presetDefaults))}
 
         lockDeckManager={lockDeckManager}
       />

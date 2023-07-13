@@ -11,7 +11,7 @@ export type Preset = {
   title: string,
   position: number,
 
-  backgroundColor: string | null,
+  backgroundColor: string,
   images: string[],
   transitionType: TransitionType,
 
@@ -38,4 +38,30 @@ export type EditablePreset = Omit<Preset, "id" | "position">
 
 export type PresetsDictionary = {
   [presetId: string]: Preset
+}
+
+export const presetDefaults: EditablePreset = {
+  title: "",
+
+  backgroundColor: "#0e141b",
+  images: [],
+  transitionType: "fade",
+
+  showProfileIcon: true,
+  profileRadius: "0px",
+  profileSize: "184px",
+  profilePosition: "default",
+  
+  showButtons: true,
+  buttonsSize: "32px",
+
+  showNumbers: true,
+  numbersColor: "#ffffff",
+  numbersSize: "48px",
+  numbersPosition: "default",
+
+  showDots: true,
+  dotsColor: "#ffffff",
+  dotsSize: "12px",
+  dotsPosition: "default",
 }

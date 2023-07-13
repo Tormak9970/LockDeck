@@ -8,7 +8,7 @@ import {
 import { useState, VFC, useEffect } from "react";
 import { PythonInterop } from "../../lib/controllers/PythonInterop";
 import { ModalStyles } from "../styles/ModalStyles";
-import { EditablePreset } from "../presets/Presets";
+import { EditablePreset, ScreenPosition, TransitionType } from "../presets/Presets";
 import { LockDeckManager } from "../../state/LockDeckManager";
 import { LockDeckContextProvider } from "../../state/LockDeckContext";
 
@@ -26,8 +26,30 @@ type EditPresetModalProps = {
  * The modal for editing and creating custom tabs.
  */
 export const EditPresetModal: VFC<EditPresetModalProps> = ({ closeModal, onConfirm, presetId, presetOptions, lockDeckManager }) => {
-  const [name, setName] = useState<string>(presetOptions.title ?? '');
-  // TODO: need state for each property
+  const [name, setName] = useState<string>(presetOptions.title);
+
+  const [backgroundColor, setBackgroundColor] = useState<string>(presetOptions.backgroundColor);
+  const [images, setImages] = useState<string[]>(presetOptions.images);
+  const [transitionType, setTransitionType] = useState<TransitionType>(presetOptions.transitionType);
+
+  const [showProfileIcon, setShowProfileIcon] = useState<boolean>(presetOptions.showProfileIcon);
+  const [profileRadius, setProfileRadius] = useState<string>(presetOptions.profileRadius);
+  const [profileSize, setProfileSize] = useState<string>(presetOptions.profileSize);
+  const [profilePosition, setProfilePosition] = useState<ScreenPosition>(presetOptions.profilePosition);
+
+  const [showButtons, setShowButtons] = useState<boolean>(presetOptions.showButtons);
+  const [buttonsSize, setButtonsSize] = useState<string>(presetOptions.buttonsSize);
+  
+  const [showNumbers, setShowNumbers] = useState<boolean>(presetOptions.showNumbers);
+  const [numbersColor, setNumbersColor] = useState<string>(presetOptions.numbersColor);
+  const [numbersSize, setNumbersSize] = useState<string>(presetOptions.numbersSize);
+  const [numbersPosition, setNumbersPosition] = useState<ScreenPosition>(presetOptions.numbersPosition);
+  
+  const [showDots, setShowDots] = useState<boolean>(presetOptions.showDots);
+  const [dotsColor, setDotsColor] = useState<string>(presetOptions.dotsColor);
+  const [dotsSize, setDotsSize] = useState<string>(presetOptions.dotsSize);
+  const [dotsPosition, setDotsPosition] = useState<ScreenPosition>(presetOptions.dotsPosition);
+
   const [canSave, setCanSave] = useState<boolean>(false);
 
   useEffect(() => {
@@ -42,6 +64,28 @@ export const EditPresetModal: VFC<EditPresetModalProps> = ({ closeModal, onConfi
     if (canSave) {
       const updated: EditablePreset = {
         title: name,
+
+        backgroundColor,
+        images,
+        transitionType,
+
+        showProfileIcon,
+        profileRadius,
+        profileSize,
+        profilePosition,
+        
+        showButtons,
+        buttonsSize,
+
+        showNumbers,
+        numbersColor,
+        numbersSize,
+        numbersPosition,
+
+        showDots,
+        dotsColor,
+        dotsSize,
+        dotsPosition,
       };
       onConfirm(presetId ?? "", updated);
       closeModal!();
