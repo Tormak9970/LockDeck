@@ -2,7 +2,7 @@ import { gamepadDialogClasses, quickAccessControlsClasses } from "decky-frontend
 import { VFC } from "react";
 
 /**
- * All css styling for the Quick Access Menu part of presetMaster.
+ * All css styling for the Quick Access Menu part of Lock Deck.
  */
 export const QamStyles: VFC<{}> = ({}) => {
   return (

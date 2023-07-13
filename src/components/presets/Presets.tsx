@@ -1,4 +1,5 @@
 export type ScreenPosition = 
+  "default" |
   "center-center" | "center-left" | "center-right" |
   "top-center" | "top-left" | "top-right" |
   "bottom-center" | "bottom-left" | "bottom-right"
@@ -14,7 +15,9 @@ export type Preset = {
   images: string[],
   transitionType: TransitionType,
 
-  showIcon: boolean,
+  showProfileIcon: boolean,
+  profilePosition: ScreenPosition,
+  
   showButtons: boolean,
 
   showNumbers: boolean,
@@ -28,7 +31,7 @@ export type Preset = {
   dotsPosition: ScreenPosition,
 }
 
-export type EditablePreset = Omit<Preset, "id">
+export type EditablePreset = Omit<Preset, "id" | "position">
 
 export type PresetsDictionary = {
   [presetId: string]: Preset

@@ -24,6 +24,8 @@ import { QamStyles } from "./components/styles/QamStyles";
 import { LockDeckContextProvider, useLockDeckContext } from "./state/LockDeckContext";
 import { EditablePreset, Preset } from "./components/presets/Presets";
 import { PluginIcon } from "./components/PluginIcon";
+import { PresetActionsButton } from "./components/PresetActionsButton";
+import { EditPresetModal } from "./components/modals/EditPresetModal";
 
 declare global {
   var SteamClient: SteamClient;
@@ -57,15 +59,38 @@ const Content: VFC<{}> = ({ }) => {
 
   function PresetEntryInteractables({ entry }: PresetEntryInteractablesProps) {
     const preset = presetsMap.get(entry.data!.id)!;
-    return (<TabActionsButton {...{ preset, lockDeckManager }} />);
+    return (<PresetActionsButton {...{ preset, lockDeckManager }} />);
   }
 
   function onAddClicked() {
     showModal(
-      <EditTabModal
+      <EditPresetModal
         onConfirm={(_: any, newPreset: EditablePreset) => {
           lockDeckManager.createPreset(newPreset);
         }}
+        presetOptions={{
+          title: "",
+
+          backgroundColor: null,
+          images: [],
+          transitionType: "fade",
+
+          showProfileIcon: true,
+          profilePosition: "default",
+          
+          showButtons: true,
+
+          showNumbers: true,
+          numbersColor: "#ffffff",
+          numbersSize: "default",
+          numbersPosition: "default",
+
+          showDots: true,
+          dotsColor: "#ffffff",
+          dotsSize: "default",
+          dotsPosition: "default",
+        }}
+
         lockDeckManager={lockDeckManager}
       />
     );
@@ -91,12 +116,10 @@ const Content: VFC<{}> = ({ }) => {
           Here you can add, edit, and activate your lockscreen presets.
         </div>
         <Field className="no-sep">
-          <Focusable style={{ width: "100%", display: "flex" }}>
-            <Focusable className="add-preset-btn" style={{ width: "calc(100% - 50px)" }}>
-              <DialogButton onClick={onAddClicked} onOKActionDescription={'Add Preset'}>
-                Add Preset
-              </DialogButton>
-            </Focusable>
+          <Focusable className="add-preset-btn" style={{ width: "100%" }}>
+            <DialogButton onClick={onAddClicked} onOKActionDescription={'Add Preset'}>
+              Add Preset
+            </DialogButton>
           </Focusable>
         </Field>
         <PanelSection title="Presets">

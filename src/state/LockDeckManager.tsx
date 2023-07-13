@@ -35,7 +35,7 @@ export class LockDeckManager {
    * @param updatedSettings The new settings for the preset.
    */
   updatePreset(presetId: string, updatedSettings: EditablePreset) {
-    this.presetsMap.set(presetId, { id: presetId, ...updatedSettings });
+    this.presetsMap.set(presetId, { id: presetId, ...updatedSettings, position: this.presetsMap.get(presetId)!.position });
     this.updateAndSave();
   }
 
@@ -55,7 +55,7 @@ export class LockDeckManager {
    * Deletes a preset.
    * @param presetId The id of the preset to delete.
    */
-  deleteTab(presetId: string) {
+  deletePreset(presetId: string) {
     const preset = this.presetsMap.get(presetId)!;
 
     if (this.activePreset === preset.id) {
@@ -72,7 +72,7 @@ export class LockDeckManager {
    */
   createPreset(newPreset: EditablePreset) {
     const id = uuidv4();
-    this.presetsMap.set(id, { id, ...newPreset });
+    this.presetsMap.set(id, { id, ...newPreset, position: this.presetsMap.size });
     this.updateAndSave();
   }
 
