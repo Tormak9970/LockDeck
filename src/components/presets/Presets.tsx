@@ -16,9 +16,12 @@ export type Preset = {
   transitionType: TransitionType,
 
   showProfileIcon: boolean,
+  profileRadius: string, //can be "default"
+  profileSize: string,
   profilePosition: ScreenPosition,
   
   showButtons: boolean,
+  buttonsSize: string,
 
   showNumbers: boolean,
   numbersColor: string,
@@ -27,7 +30,7 @@ export type Preset = {
 
   showDots: boolean,
   dotsColor: string,
-  dotsSize: string,
+  dotsSize: string, //can be "default"
   dotsPosition: ScreenPosition,
 }
 

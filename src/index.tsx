@@ -76,18 +76,21 @@ const Content: VFC<{}> = ({ }) => {
           transitionType: "fade",
 
           showProfileIcon: true,
+          profileRadius: "0px",
+          profileSize: "184px",
           profilePosition: "default",
           
           showButtons: true,
+          buttonsSize: "32px",
 
           showNumbers: true,
           numbersColor: "#ffffff",
-          numbersSize: "default",
+          numbersSize: "48px",
           numbersPosition: "default",
 
           showDots: true,
           dotsColor: "#ffffff",
-          dotsSize: "default",
+          dotsSize: "12px",
           dotsPosition: "default",
         }}
 
