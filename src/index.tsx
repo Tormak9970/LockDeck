@@ -6,7 +6,7 @@ import {
   PanelSection,
   ReorderableEntry,
   ReorderableList,
-  // RoutePatch,
+  RoutePatch,
   ServerAPI,
   showModal,
   staticClasses,
@@ -26,8 +26,10 @@ import { EditablePreset, Preset, presetDefaults } from "./components/presets/Pre
 import { PluginIcon } from "./components/PluginIcon";
 import { PresetActionsButton } from "./components/PresetActionsButton";
 import { EditPresetModal } from "./components/modals/EditPresetModal";
+import { patchLockScreen } from "./patches/LockScreenPatch";
 
 declare global {
+  let DeckyPluginLoader: any;
   var SteamClient: SteamClient;
   let loginStore: LoginStore;
   //* This casing is correct, idk why it doesn't match the others.
@@ -124,7 +126,8 @@ const Content: VFC<{}> = ({ }) => {
 
 
 export default definePlugin((serverAPI: ServerAPI) => {
-  // let lockscreenPatch: RoutePatch;
+  let lockscreenPatch: RoutePatch;
+  // let settingsTestPatch: RoutePatch;
 
   PythonInterop.setServer(serverAPI);
   const lockDeckManager = new LockDeckManager();
@@ -132,8 +135,8 @@ export default definePlugin((serverAPI: ServerAPI) => {
 
   const loginUnregisterer = PluginController.initOnLogin(async () => {
     await lockDeckManager.loadPresets();
-    // TODO: patch the lockscreen
-    // lockscreenPatch = patchLibrary(serverAPI, lockDeckManager);
+    lockscreenPatch = patchLockScreen(serverAPI, lockDeckManager);
+    // settingsTestPatch = patchSettings(serverAPI, lockDeckManager);
   });
 
   return {
@@ -144,8 +147,8 @@ export default definePlugin((serverAPI: ServerAPI) => {
       </LockDeckContextProvider>,
     icon: <PluginIcon />,
     onDismount: () => {
-      // TODO: remove lockscreen patch
-      // serverAPI.routerHook.removePatch("/library", libraryPatch);
+      serverAPI.routerHook.removePatch("/library/home", lockscreenPatch);
+      // serverAPI.routerHook.removePatch("/settings", settingsTestPatch);
 
       loginUnregisterer.unregister();
       PluginController.dismount();

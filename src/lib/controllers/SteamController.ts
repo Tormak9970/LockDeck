@@ -28,16 +28,16 @@ export class SteamController {
           isLoggedIn = false;
         } else {
           if (isLoggedIn !== true && (once ? !this.hasLoggedIn : true)) {
-            if (onLogin) {
-              if (waitForPasscode && securitystore.IsLockScreenActive()) {
-                waitForCondition(100, 250, () => !securitystore.IsLockScreenActive()).then(() => {
-                  //* basically, wait up to 25 minutes for the user to enter their passcode, and at that point, if they have logged in, initialize regardless.
-                  onLogin(username);
-                })
-              } else {
-                onLogin(username);
-              }
-            }
+            if (onLogin) onLogin(username);
+            // ! This is for ref on how to check if the lockscreen exists
+            // if (waitForPasscode && securitystore.IsLockScreenActive()) {
+            //   waitForCondition(100, 250, () => !securitystore.IsLockScreenActive()).then(() => {
+            //     //* basically, wait up to 25 minutes for the user to enter their passcode, and at that point, if they have logged in, initialize regardless.
+            //     onLogin(username);
+            //   })
+            // } else {
+            //   onLogin(username);
+            // }
           }
           isLoggedIn = true;
         }
