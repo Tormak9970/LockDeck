@@ -1,4 +1,5 @@
 import { sleep } from 'decky-frontend-lib';
+import { PresetsDictionary } from "../components/presets/Presets";
 
 /**
  * Waits for a condition to be true.
@@ -55,8 +56,9 @@ export function getNonBigIntUserId(low: number, high: number): number {
  * @param presets The presets to check.
  * @returns True if there were no issues.
  */
-export function validatePresets(presets): boolean {
+export function validatePresets(presets: PresetsDictionary): boolean {
   return Object.values(presets).every((preset) => {
     // TODO: validate them
+    return true;
   });
 }
