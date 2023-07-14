@@ -71,7 +71,7 @@ class Plugin:
     """
     Plugin.settings.read()
     Plugin.presets = await Plugin.get_setting(self, "presets", {})
-    Plugin.activePreset = await Plugin.get_setting(self, "activePreset", None)
+    Plugin.active_preset = await Plugin.get_setting(self, "activePreset", "")
 
   T = TypeVar("T")
 

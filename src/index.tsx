@@ -4,9 +4,9 @@ import {
   Field,
   Focusable,
   PanelSection,
+  Patch,
   ReorderableEntry,
   ReorderableList,
-  RoutePatch,
   ServerAPI,
   showModal,
   staticClasses,
@@ -26,7 +26,7 @@ import { EditablePreset, Preset, presetDefaults } from "./components/presets/Pre
 import { PluginIcon } from "./components/PluginIcon";
 import { PresetActionsButton } from "./components/PresetActionsButton";
 import { EditPresetModal } from "./components/modals/EditPresetModal";
-import { patchLockScreen } from "./patches/LockScreenPatch";
+import { getLockScreen, patchLockScreen } from "./patches/LockScreenPatch";
 
 declare global {
   let DeckyPluginLoader: any;
@@ -53,7 +53,7 @@ function makePresetList(presetMap: Map<string, Preset>): Preset[] {
  */
 const Content: VFC<{}> = ({ }) => {
   const { activePreset, presetsMap, lockDeckManager } = useLockDeckContext();
-  const [presetsList, setPresetsList] = useState<Preset[]>(makePresetList(presetsMap));
+  const [ presetsList, setPresetsList ] = useState<Preset[]>(makePresetList(presetsMap));
 
   useEffect(() => {
     setPresetsList(makePresetList(presetsMap));
@@ -126,8 +126,7 @@ const Content: VFC<{}> = ({ }) => {
 
 
 export default definePlugin((serverAPI: ServerAPI) => {
-  let lockscreenPatch: RoutePatch;
-  // let settingsTestPatch: RoutePatch;
+  let lockScreenPatch: Patch | undefined;
 
   PythonInterop.setServer(serverAPI);
   const lockDeckManager = new LockDeckManager();
@@ -135,8 +134,10 @@ export default definePlugin((serverAPI: ServerAPI) => {
 
   const loginUnregisterer = PluginController.initOnLogin(async () => {
     await lockDeckManager.loadPresets();
-    lockscreenPatch = patchLockScreen(serverAPI, lockDeckManager);
-    // settingsTestPatch = patchSettings(serverAPI, lockDeckManager);
+
+    getLockScreen().then((lockScreen) => {
+      patchLockScreen(lockScreen, lockDeckManager);
+    })
   });
 
   return {
@@ -147,8 +148,7 @@ export default definePlugin((serverAPI: ServerAPI) => {
       </LockDeckContextProvider>,
     icon: <PluginIcon />,
     onDismount: () => {
-      serverAPI.routerHook.removePatch("/library/home", lockscreenPatch);
-      // serverAPI.routerHook.removePatch("/settings", settingsTestPatch);
+      lockScreenPatch?.unpatch();
 
       loginUnregisterer.unregister();
       PluginController.dismount();

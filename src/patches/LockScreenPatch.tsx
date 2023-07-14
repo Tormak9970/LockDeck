@@ -4,11 +4,11 @@ import {
   findInReactTree,
   findInTree,
   findModuleChild,
-  RoutePatch,
-  ServerAPI,
+  Patch,
 } from "decky-frontend-lib";
 import { ReactElement } from "react";
 import { LockDeckManager } from "../state/LockDeckManager";
+import { LogController } from "../lib/controllers/LogController";
 
 const LockScreenModule = findModuleChild((mod) => {
   if (typeof mod !== 'object') return undefined;
@@ -17,22 +17,23 @@ const LockScreenModule = findModuleChild((mod) => {
 
 /**
  * Patches the Steam lockscreen to allow the plugin to change the styling.
- * @param serverAPI The plugin's serverAPI.
+ * @param lockScreen The lockScreen element.
  * @param lockDeckManager The plugin's core state manager.
- * @returns A routepatch for the library.
+ * @returns A patch for the lockScreen.
  */
-export const patchLockScreen = (serverAPI: ServerAPI, lockDeckManager: LockDeckManager): RoutePatch => {
+export const patchLockScreen = (lockScreen: any, lockDeckManager: LockDeckManager): Patch => {
   //* This only runs 1 time, which is perfect
-  return serverAPI.routerHook.addPatch("/library/home", (props: { path: string; children: ReactElement; }) => {
-    console.log("children:", props.children);
   
-    afterPatch(props.children, "type", (_: Record<string, unknown>[], ret1: ReactElement) => {
-      console.log("ret1:", ret1);
+  return afterPatch(lockScreen.prototype, "render", (_: Record<string, unknown>[], ret1: ReactElement) => {
+    LogController.log("ret1:", ret1);
   
-      return ret1;
-    });
+    // afterPatch(props.children, "type", (_: Record<string, unknown>[], ret2: ReactElement) => {
+    //   console.log("ret2:", ret2);
   
-    return props
+    //   return ret2;
+    // });
+
+    return ret1;
   })
 };
 
@@ -73,12 +74,10 @@ export const patchLockScreen = (serverAPI: ServerAPI, lockDeckManager: LockDeckM
 
 
 export async function getLockScreen() {
-  while (!DeckyPluginLoader?.routerHook?.routes) {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-  }
+  // while (!DeckyPluginLoader?.routerHook?.routes) {
+  //   await new Promise((resolve) => setTimeout(resolve, 500));
+  // }
 
-  const settings = DeckyPluginLoader.routerHook.routes.find((x: ReactElement) => x?.props?.path == '/settings');
-  const internalsPage = fakeRenderComponent(DeckyPluginLoader.routerHook.routes.find((x: ReactElement) => x?.props?.path == '/zoo').props.children.type);
   // let LoginScreen = findInReactTree(
   //   fakeRenderComponent(
   //     findInTree(
@@ -96,5 +95,7 @@ export async function getLockScreen() {
   //   LoginScreen = fakeRenderComponent(LoginScreen).type;
   // }
   // return LoginScreen;
+
+  return fakeRenderComponent(LockScreenModule.qH) as ReactElement;
 };
 

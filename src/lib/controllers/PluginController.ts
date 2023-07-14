@@ -29,8 +29,8 @@ export class PluginController {
    * @returns The unregister function for the login hook.
    */
   static initOnLogin(onMount: () => Promise<void>): Unregisterer {
-    return this.steamController.registerForAuthStateChange(async () => {
-      // LogController.log(`User logged in. [DEBUG] username: ${username}.`);
+    return this.steamController.registerForAuthStateChange(async (username) => {
+      LogController.log(`User logged in. [DEBUG] username: ${username}.`);
       if (await this.steamController.waitForServicesToInitialize()) {
         PluginController.init();
         onMount();
