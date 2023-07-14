@@ -1,20 +1,17 @@
 import { Button, Focusable } from "decky-frontend-lib"
 import React, { VFC, useState } from "react"
-import { FilterType, TabFilterSettings } from "../filters/Filters"
-import { capitalizeFirstLetter } from "../../lib/Utils"
 import { BiSolidDownArrow } from "react-icons/bi"
 
-type FilterSectionAccordionProps = {
-  index: number,
-  filter: TabFilterSettings<FilterType>,
+type SectionAccordionProps = {
+  label: string,
   isOpen: boolean,
   children: React.ReactNode
 }
 
 /**
- * Filter Section accordion component
+ * Options Section accordion component
  */
-export const FilterSectionAccordion: VFC<FilterSectionAccordionProps> = ({ index, filter, isOpen, children }) => {
+export const SectionAccordion: VFC<SectionAccordionProps> = ({ label, isOpen, children }) => {
   const [open, setOpen] = useState(isOpen);
 
   function onClick(e: any) {
@@ -24,7 +21,7 @@ export const FilterSectionAccordion: VFC<FilterSectionAccordionProps> = ({ index
 
   return (
     <Focusable style={{ width: "100%", padding: "0" }}>
-      <Focusable className="filter-start-cont" focusClassName="start-focused" focusWithinClassName="start-focused">
+      <Focusable className="accordion-start-cont" focusClassName="start-focused" focusWithinClassName="start-focused">
         <Button style={{
           width: "100%",
           padding: "0",
@@ -38,9 +35,9 @@ export const FilterSectionAccordion: VFC<FilterSectionAccordionProps> = ({ index
           justifyContent: "space-between",
           alignItems: "center"
         }} onOKButton={onClick} onClick={onClick}>
-          <div className="filter-line" />
-          <div className="filter-label">
-            Filter {index + 1} - {capitalizeFirstLetter(filter.type)}{filter.type === "merge" ? ` - mode: ${capitalizeFirstLetter((filter as TabFilterSettings<'merge'>).params.mode)}` : ""}
+          <div className="accordion-line" />
+          <div className="accordion-label">
+            {label}
             <BiSolidDownArrow
               style={{
                 animation: "transform 0.2s ease-in-out",
@@ -50,7 +47,7 @@ export const FilterSectionAccordion: VFC<FilterSectionAccordionProps> = ({ index
               }}
             />
           </div>
-          <div className="filter-line" />
+          <div className="accordion-line" />
         </Button>
       </Focusable>
       {open && children}
